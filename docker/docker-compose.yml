@@ -1,0 +1,38 @@
+services:
+  oba_server:
+    container_name : oba_server_testing_container
+    image: oba_server_testing_image_v1
+    build:
+      context: ../
+      dockerfile: ./docker/Dockerfile
+    depends_on:
+      - database
+    ports:
+      - "5006:5005" # Debug port
+      - "8085:8080" # App server port
+    volumes:
+      - type: bind
+        source: ../docker/config/server.xml
+        target: /usr/local/tomcat/conf/server.xml
+      - type: bind
+        source: ../docker/config/context.xml
+        target: /usr/local/tomcat/conf/context.xml
+      - type : bind
+        source: ../time-simulation/faketime.cfg
+        target: /etc/faketimerc
+      # - ./testdata/bundle:/bundle
+    stdin_open: true
+    tty: true
+
+  database:
+    image: mysql:8.3
+    container_name: oba_test_server_database
+    environment:
+      MYSQL_ROOT_PASSWORD: Ins3cure!
+      MYSQL_DATABASE: oba_database
+      MYSQL_USER: oba_user
+      MYSQL_PASSWORD: oba_password
+    ports:
+      - "3310:3306"
+    # volumes:
+    #   - ../database_data:/var/lib/mysql
