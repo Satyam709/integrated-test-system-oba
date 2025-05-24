@@ -37,5 +37,5 @@
               username="oba_user"
               password="oba_password"
               driverClassName="com.mysql.cj.jdbc.Driver"
-              url="jdbc:mysql://database:3306/oba_database"/>
+              url="jdbc:mysql://database:3306/oba_database?useSSL=false&amp;allowPublicKeyRetrieval=true"/>
 </Context>

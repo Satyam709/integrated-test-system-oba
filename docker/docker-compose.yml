@@ -34,5 +34,10 @@ services:
       MYSQL_PASSWORD: oba_password
     ports:
       - "3310:3306"
-    # volumes:
+    volumes:
     #   - ../database_data:/var/lib/mysql
+      - type: bind
+        source: ../docker/config/my.cnf
+        target: /etc/mysql/conf.d/my.cnf
+    stdin_open: true
+    tty: true
