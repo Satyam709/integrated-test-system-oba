@@ -33,7 +33,7 @@ RUN mkdir -p ${CATALINA_HOME} && \
     tar -xzf /tmp/apache-tomcat.tar.gz -C ${CATALINA_HOME} --strip-components=1 && \
     rm -f /tmp/apache-tomcat.tar.gz
 
-# Move the gtfs static file
+# Move the gtfs static_tests file
 COPY ./testdata/gtfs.zip \
     /bundle/gtfs.zip
 
