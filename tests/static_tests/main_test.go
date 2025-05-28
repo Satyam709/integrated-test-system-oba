@@ -7,10 +7,8 @@ import (
 	"os"
 	"path/filepath"
 	"testing"
-	"time"
 
 	"github.com/Satyam709/integrated-test-system-oba/internal/docker"
-	"github.com/testcontainers/testcontainers-go/wait"
 )
 
 var (
@@ -31,39 +29,27 @@ func TestMain(m *testing.M) {
 		log.Fatalf("Error initializing stack: %v", err)
 	}
 	stack := DockerManager.GetStack()
-	// get the container and build bundle and start server
-	oba_container, err := stack.ServiceContainer(ctx, "oba_server")
+
+	obaContainer,err := DockerManager.GetOBAServerContainer(ctx)
 	if err != nil {
-		fmt.Printf("Error getting OBA server container: %v\n", err)
-		return
+		log.Fatalf("Error getting OBA server container: %v", err)
 	}
 
 	// build_bundle.sh log
-	_, _, err = oba_container.Exec(ctx, []string{"sh", "-c", "cd /bundle && ./build_bundle.sh"})
+	err = obaContainer.BuildBundle(ctx)
 	if err != nil {
-		log.Fatalf("Error executing build_bundle.sh: %v", err)
+		log.Fatalf("Error building GTFS bundle: %v", err)
 	}
-	fmt.Printf("build_bundle.sh executed successfully\n")
-	_, _, err = oba_container.Exec(ctx, []string{"sh", "-c", "/usr/local/tomcat/bin/catalina.sh start"})
+	//start the OBA server
+	err = obaContainer.StartServer(ctx)
 	if err != nil {
 		log.Fatalf("Error starting OBA server: %v", err)
 	}
-	fmt.Printf("Server start cmd executed\n")
-
 	// Wait for port 8080 (inside container)
-	log.Printf("waiting for server to start ...")
-	err = wait.
-		ForHTTP("/onebusaway-api-webapp/api/where/config.json?key=TEST").
-		WithPort("8080/tcp").
-		WithStartupTimeout(180*time.Second).
-		WaitUntilReady(ctx, oba_container)
-
+	err = obaContainer.WaitForServerReady(ctx)
 	if err != nil {
-		log.Fatalf("OBA server not ready: %v", err)
-	} else {
-		fmt.Printf("OBA server is ready and running on port 8080\n")
+		log.Fatalf("Error waiting for OBA server to be ready: %v", err)
 	}
-
 	// Run the tests
 	fmt.Printf("Running static tests...\n")
 	exitCode := m.Run()
