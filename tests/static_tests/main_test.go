@@ -17,6 +17,7 @@ var (
 	DockerManager *docker.DockerManager
 	ctx           context.Context
 	obaClient     *onebusaway.Client
+	obaContainer  *docker.OBAContainer
 )
 
 func TestMain(m *testing.M) {
@@ -33,7 +34,7 @@ func TestMain(m *testing.M) {
 	}
 	stack := DockerManager.GetStack()
 
-	obaContainer, err := DockerManager.GetOBAServerContainer(ctx)
+	obaContainer, err = DockerManager.GetOBAServerContainer(ctx)
 	if err != nil {
 		log.Fatalf("Error getting OBA server container: %v", err)
 	}
@@ -43,7 +44,7 @@ func TestMain(m *testing.M) {
 	if err != nil {
 		log.Fatalf("Error building GTFS bundle: %v", err)
 	}
-	
+
 	//start the OBA server
 	err = obaContainer.StartServer(ctx)
 	if err != nil {
