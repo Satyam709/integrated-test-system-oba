@@ -79,6 +79,7 @@ func addTestData() []ArrivalsAndDeparturesTest {
 
 func TestArrivalsAndDepartures(t *testing.T) {
 	tests := addTestData()
+	restartObaServer()
 
 	for _, test := range tests {
 		t.Run(test.testTitle, func(t *testing.T) {

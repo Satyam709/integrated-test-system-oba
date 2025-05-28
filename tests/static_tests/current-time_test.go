@@ -19,6 +19,9 @@ func TestCurrentTime(t *testing.T) {
 	err := timec.SetFakeTime(expectedTime)
 	assert.NoError(t, err, "Expected no error when setting fake time")
 
+	// restart the oba server
+	restartObaServer()
+
 	contextWithTimeout, cancel := context.WithTimeout(context.Background(), 30 * time.Second)
 	defer cancel()
 

@@ -11,13 +11,14 @@ import (
 	onebusaway "github.com/OneBusAway/go-sdk"
 	"github.com/OneBusAway/go-sdk/option"
 	"github.com/Satyam709/integrated-test-system-oba/internal/docker"
+	"github.com/Satyam709/integrated-test-system-oba/internal/time"
 )
 
 var (
 	DockerManager *docker.DockerManager
-	ctx           context.Context
-	obaClient     *onebusaway.Client
-	obaContainer  *docker.OBAContainer
+	// ctx           context.Context
+	obaClient    *onebusaway.Client
+	obaContainer *docker.OBAContainer
 )
 
 func TestMain(m *testing.M) {
@@ -32,7 +33,7 @@ func TestMain(m *testing.M) {
 	if err != nil {
 		log.Fatalf("Error initializing stack: %v", err)
 	}
-	stack := DockerManager.GetStack()
+	defer cleanUP()
 
 	obaContainer, err = DockerManager.GetOBAServerContainer(ctx)
 	if err != nil {
@@ -45,18 +46,6 @@ func TestMain(m *testing.M) {
 		log.Fatalf("Error building GTFS bundle: %v", err)
 	}
 
-	//start the OBA server
-	err = obaContainer.StartServer(ctx)
-	if err != nil {
-		log.Fatalf("Error starting OBA server: %v", err)
-	}
-
-	// Wait for port 8080 (inside container)
-	err = obaContainer.WaitForServerReady(ctx)
-	if err != nil {
-		log.Fatalf("Error waiting for OBA server to be ready: %v", err)
-	}
-
 	// init the OBA client
 	log.Printf("Initializing OBA client with base URL: %s\n", "http://localhost:8085/onebusaway-api-webapp")
 	obaClient = onebusaway.NewClient(
@@ -64,14 +53,41 @@ func TestMain(m *testing.M) {
 		option.WithBaseURL("http://localhost:8085/onebusaway-api-webapp"),
 	)
 
+	// set initial time
+	err = time.SetFakeTime(1746082800000) // 2025-05-1 00:00:00
+	if err != nil {
+		log.Fatalf("Error setting initial fake time: %v", err)
+	}
+
 	// Run the tests
 	fmt.Printf("Running static tests...\n")
 	exitCode := m.Run()
 	fmt.Printf("exitCode: %v\n", exitCode)
+}
 
-	// Clean up the environment after tests
-	err = stack.Down(ctx)
+func cleanUP() {
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	err := DockerManager.Cleanup(ctx)
 	if err != nil {
-		fmt.Printf("Error tearing down containers: %v\n", err)
+		log.Fatalf("Error cleaning up Docker stack: %v", err)
+	}
+	log.Printf("Docker stack cleaned up successfully")
+}
+
+func restartObaServer() {
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	if obaContainer == nil {
+		log.Fatalf("OBA container is not initialized")
+	}
+	err := obaContainer.Restart(ctx)
+	if err != nil {
+		log.Fatalf("Error restarting OBA server: %v", err)
+	}
+	// Wait for port 8080 (inside container)
+	err = obaContainer.WaitForServerReady(ctx)
+	if err != nil {
+		log.Fatalf("Error waiting for OBA server to be ready: %v", err)
 	}
 }

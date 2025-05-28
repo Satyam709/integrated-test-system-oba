@@ -61,7 +61,6 @@ func (o *OBAContainer) WaitForServerReady(ctx context.Context) error {
 	return nil
 }
 
-
 func (o *OBAContainer) StopServer(ctx context.Context) error {
 	log.Printf("Stopping OBA server...")
 	if o.Container == nil {
@@ -73,5 +72,22 @@ func (o *OBAContainer) StopServer(ctx context.Context) error {
 		return fmt.Errorf("failed to stop OBA server: %w", err)
 	}
 	log.Printf("OBA server stopped successfully")
+	return nil
+}
+
+func (o *OBAContainer) Restart(ctx context.Context) error {
+	log.Printf("Restarting OBA server...")
+	if o.Container == nil {
+		return fmt.Errorf("OBA container is not initialized")
+	}
+	err := o.StopServer(ctx)
+	if err != nil {
+		return fmt.Errorf("failed to stop OBA server: %w", err)
+	}
+	err = o.StartServer(ctx)
+	if err != nil {
+		return fmt.Errorf("failed to start OBA server: %w", err)
+	}
+	log.Printf("OBA server restarted successfully")
 	return nil
 }
