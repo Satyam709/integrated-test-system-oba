@@ -37,5 +37,8 @@ func SetFakeTime(milliseconds int64) error {
 		return fmt.Errorf("error writing to config file: %v", err)
 	}
 
+	// wait 10 seconds to ensure libfaketime reads the new time
+	time.Sleep(10 * time.Second)
+
 	return nil
 }
