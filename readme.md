@@ -32,6 +32,7 @@ docker build -t oba_server_testing_image_v1 -f docker/Dockerfile .
 ```bash
 go test ./tests/static_tests/...
 ```
+Test results and logs are available in [results.log](./results.log) after test execution.
 
 ## Test Environment
 

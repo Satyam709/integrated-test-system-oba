@@ -1,0 +1,84 @@
+go test -v ./tests/static_tests/...
+2025/05/29 01:26:53 Spinning up containers using compose file: /home/satyam/my_trial_oba/integrated-test-system-oba/docker/docker-compose.yml
+2025/05/29 01:26:53 github.com/testcontainers/testcontainers-go - Connected to docker: 
+  Server Version: 27.4.0
+  API Version: 1.47
+  Operating System: Docker Desktop
+  Total Memory: 7556 MB
+  Labels:
+    com.docker.desktop.address=unix:///var/run/docker-cli.sock
+  Testcontainers for Go Version: v0.37.0
+  Resolved Docker Host: unix:///var/run/docker.sock
+  Resolved Docker Socket Path: /var/run/docker.sock
+  Test SessionID: b20443858ecf38ceb06c8ed245641806d0326d62b9a983316059bc0c1abd6656
+  Test ProcessID: 608d065e-875b-42a4-8877-7e24281ae608
+2025/05/29 01:26:53 Spinning up containers
+ Network 3dc98632-46da-4573-b29e-4add366f4bc0_default  Creating
+ Network 3dc98632-46da-4573-b29e-4add366f4bc0_default  Created
+ Container oba_test_server_database  Creating
+ Container oba_test_server_database  Created
+ Container oba_server_testing_container  Creating
+ Container oba_server_testing_container  Created
+ Container oba_test_server_database  Starting
+ Container oba_test_server_database  Started
+ Container oba_server_testing_container  Starting
+ Container oba_server_testing_container  Started
+2025/05/29 01:26:54 🐳 Creating container for image testcontainers/ryuk:0.11.0
+2025/05/29 01:26:55 ✅ Container created: 08766989ba7e
+2025/05/29 01:26:55 🐳 Starting container: 08766989ba7e
+2025/05/29 01:26:55 ✅ Container started: 08766989ba7e
+2025/05/29 01:26:55 ⏳ Waiting for container id 08766989ba7e image: testcontainers/ryuk:0.11.0. Waiting for: &{Port:8080/tcp timeout:<nil> PollInterval:100ms skipInternalCheck:false}
+2025/05/29 01:26:55 🔔 Container is ready: 08766989ba7e
+2025/05/29 01:26:55 Building GTFS bundle...
+2025/05/29 01:27:45 build_bundle.sh executed successfully
+2025/05/29 01:27:45 Initializing OBA client with base URL: http://localhost:8085/onebusaway-api-webapp
+2025/05/29 01:27:45 Setting faketime to: 2025-05-01 00:00:00
+Running static tests...
+=== RUN   TestArrivalsAndDepartures
+2025/05/29 01:27:55 Restarting OBA server...
+2025/05/29 01:27:55 Stopping OBA server...
+2025/05/29 01:27:55 OBA server stopped successfully
+2025/05/29 01:28:00 Starting OBA server...
+2025/05/29 01:28:00 OBA server start command executed successfully
+2025/05/29 01:28:00 OBA server restarted successfully
+2025/05/29 01:28:00 Waiting for OBA server to start...
+2025/05/29 01:28:31 OBA server is ready and running on port 8080
+=== RUN   TestArrivalsAndDepartures/Many_Arrivals_and_Departures_
+2025/05/29 01:28:31 Setting faketime to: 2025-05-19 08:00:00
+=== RUN   TestArrivalsAndDepartures/Very_few_Arrivals_and_Departures
+2025/05/29 01:28:41 Setting faketime to: 2025-05-19 16:00:00
+=== RUN   TestArrivalsAndDepartures/No_Arrivals_of_trip_1_729861698_on_non_service_day
+2025/05/29 01:28:54 Setting faketime to: 2025-05-21 16:00:00
+=== RUN   TestArrivalsAndDepartures/No_Arrivals_and_Departures_(very_short_time_range)
+2025/05/29 01:29:04 Setting faketime to: 2025-05-22 08:29:00
+--- PASS: TestArrivalsAndDepartures (73.71s)
+    --- PASS: TestArrivalsAndDepartures/Many_Arrivals_and_Departures_ (10.27s)
+    --- PASS: TestArrivalsAndDepartures/Very_few_Arrivals_and_Departures (10.04s)
+    --- PASS: TestArrivalsAndDepartures/No_Arrivals_of_trip_1_729861698_on_non_service_day (10.04s)
+    --- PASS: TestArrivalsAndDepartures/No_Arrivals_and_Departures_(very_short_time_range) (10.02s)
+=== RUN   TestCurrentTime
+2025/05/29 01:29:14 Starting test for current time endpoint...
+2025/05/29 01:29:14 Setting faketime to: 2025-05-20 16:18:00
+2025/05/29 01:29:26 Restarting OBA server...
+2025/05/29 01:29:26 Stopping OBA server...
+2025/05/29 01:29:27 OBA server stopped successfully
+2025/05/29 01:29:32 Starting OBA server...
+2025/05/29 01:29:32 OBA server start command executed successfully
+2025/05/29 01:29:32 OBA server restarted successfully
+2025/05/29 01:29:32 Waiting for OBA server to start...
+2025/05/29 01:29:58 OBA server is ready and running on port 8080
+--- PASS: TestCurrentTime (39.10s)
+PASS
+exitCode: 0
+ Container oba_server_testing_container  Stopping
+ Container oba_server_testing_container  Stopped
+ Container oba_server_testing_container  Removing
+ Container oba_server_testing_container  Removed
+ Container oba_test_server_database  Stopping
+ Container oba_test_server_database  Stopped
+ Container oba_test_server_database  Removing
+ Container oba_test_server_database  Removed
+ Network 3dc98632-46da-4573-b29e-4add366f4bc0_default  Removing
+ Network 3dc98632-46da-4573-b29e-4add366f4bc0_default  Removed
+2025/05/29 01:30:10 Docker stack cleaned up successfully
+ok      github.com/Satyam709/integrated-test-system-oba/tests/static_tests
