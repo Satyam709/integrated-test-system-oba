@@ -41,10 +41,10 @@ func TestMain(m *testing.M) {
 	}
 
 	// build_bundle.sh log
-	err = obaContainer.BuildBundle(ctx)
-	if err != nil {
-		log.Fatalf("Error building GTFS bundle: %v", err)
-	}
+	// err = obaContainer.BuildBundle(ctx)
+	// if err != nil {
+	// 	log.Fatalf("Error building GTFS bundle: %v", err)
+	// }
 
 	// init the OBA client
 	log.Printf("Initializing OBA client with base URL: %s\n", "http://localhost:8085/onebusaway-api-webapp")

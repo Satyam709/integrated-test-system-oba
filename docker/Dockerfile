@@ -45,6 +45,7 @@ COPY ./oba-artifacts/onebusaway-transit-data-federation-builder-withAllDependenc
 COPY ./testdata/gtfs.zip .
 COPY ./docker/scripts/build_bundle.sh .
 RUN chmod +x build_bundle.sh
+RUN ./build_bundle.sh
 
 # Set the configured time zone
 RUN ln -fs /usr/share/zoneinfo/$TZ /etc/localtime

@@ -38,7 +38,7 @@ func SetFakeTime(milliseconds int64) error {
 	}
 
 	// wait 10 seconds to ensure libfaketime reads the new time
-	time.Sleep(10 * time.Second)
+	time.Sleep(2 * time.Second)
 
 	return nil
 }

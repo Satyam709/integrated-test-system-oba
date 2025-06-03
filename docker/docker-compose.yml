@@ -1,12 +1,14 @@
 services:
   oba_server:
     container_name : oba_server_testing_container
-    image: oba_server_testing_image_v1
+    image: oba_server_testing_image_v1.1
     build:
       context: ../
       dockerfile: ./docker/Dockerfile
     depends_on:
       - database
+    environment:
+      - FAKETIME_CACHE_DURATION=1 
     ports:
       - "5006:5005" # Debug port
       - "8085:8080" # App server port
