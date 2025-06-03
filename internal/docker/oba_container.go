@@ -85,6 +85,7 @@ func (o *OBAContainer) Restart(ctx context.Context) error {
 		return fmt.Errorf("failed to stop OBA server: %w", err)
 	}
 	// Wait for a short period to ensure the server has stopped
+	// *** to be fixed : wait should be conditional *** 
 	time.Sleep(5 * time.Second)
 	err = o.StartServer(ctx)
 	if err != nil {

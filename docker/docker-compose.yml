@@ -20,7 +20,7 @@ services:
         source: ../docker/config/context.xml
         target: /usr/local/tomcat/conf/context.xml
       - type : bind
-        source: ../internal/time/faketime.cfg
+        source: ../internal/timecontroller/faketime.cfg
         target: /etc/faketimerc
       # - ./testdata/bundle:/bundle
     stdin_open: true

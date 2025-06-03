@@ -1,10 +1,9 @@
-package time
+package timecontroller
 
 import (
 	"fmt"
 	"log"
 	"os"
-	"path/filepath"
 	"time"
 )
 
@@ -27,10 +26,7 @@ func SetFakeTime(milliseconds int64) error {
 	log.Printf("Setting faketime to: %s", formattedTime)
 
 	// Get the current working directory
-	cwd := os.Getenv("PROJECT_ROOT")
-
-	// Construct the path to faketime.cfg
-	configPath := filepath.Join(cwd, "internal", "time", "faketime.cfg")
+	configPath := os.Getenv("TIME_CONFIG_PATH")
 
 	err = os.WriteFile(configPath, []byte(formattedTime), 0644)
 	if err != nil {

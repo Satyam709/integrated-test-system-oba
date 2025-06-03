@@ -4,7 +4,7 @@ FROM alpine:latest
 ENV CATALINA_HOME="/usr/local/tomcat"
 ENV CATALINA_OPTS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
 ENV TZ="America/Los_Angeles"
-ENV OBA_VERSION=2.5.13-otsf
+
 
 # Install essential runtime dependencies first
 RUN apk add --no-cache \
@@ -103,8 +103,7 @@ RUN touch /etc/faketimerc
 WORKDIR $CATALINA_HOME/lib
 COPY ./oba-artifacts/mysql-connector-j.jar .
 
-# Put the user in the source code directory when they shell in
-WORKDIR /src
+WORKDIR /
 
 # Expose an additional port for debugging
 EXPOSE 5005

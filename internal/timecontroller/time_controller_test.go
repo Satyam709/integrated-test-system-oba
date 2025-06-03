@@ -1,10 +1,8 @@
-package time
+package timecontroller
 
 import (
 	"testing"
-	// "github.com/stretchr/testify/assert"
 	"os"
-	"path/filepath"
 )
 
 func TestSetFakeTime(t *testing.T) {
@@ -12,17 +10,14 @@ func TestSetFakeTime(t *testing.T) {
 	// (1710974400000 milliseconds since epoch)
 	testTime := int64(1747539000000)
 
-	// Call SetFakeTime
 	err := SetFakeTime(testTime)
 	if err != nil {
 		t.Fatalf("SetFakeTime failed: %v", err)
 	}
 
 	// Get the current working directory
-	cwd := os.Getenv("PROJECT_ROOT")
+	configPath := os.Getenv("TIME_CONFIG_PATH")
 
-	// Read the faketime.cfg file
-	configPath := filepath.Join(cwd, "internal", "time", "faketime.cfg")
 	content, err := os.ReadFile(configPath)
 	if err != nil {
 		t.Fatalf("Failed to read faketime.cfg: %v", err)

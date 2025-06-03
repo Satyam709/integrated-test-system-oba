@@ -2,6 +2,7 @@
 
 # env variables
 export PROJECT_ROOT=$(shell pwd)
+export TIME_CONFIG_PATH=$(shell pwd)/internal/timecontroller/faketime.cfg
 
 # Default target
 all: test-all
@@ -12,14 +13,14 @@ test-all:
 
 # Run only static tests
 test-static:
-	go test -v ./tests/static_tests/...
+	go test -count=1 -v ./tests/static_tests/...
 
 # Run only realtime tests
 test-realtime:
-	go test -v ./tests/realtime_tests/...
+	go test -count=1 -v ./tests/realtime_tests/...
 
 test-time_controller:
-	go test -v ./internal/time/...
+	go test -count=1 -v ./internal/timecontroller/...
 # Clean up any temporary files or artifacts
 clean:
 	rm -f tests/static_tests/*.test

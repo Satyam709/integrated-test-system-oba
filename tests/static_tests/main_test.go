@@ -11,7 +11,7 @@ import (
 	onebusaway "github.com/OneBusAway/go-sdk"
 	"github.com/OneBusAway/go-sdk/option"
 	"github.com/Satyam709/integrated-test-system-oba/internal/docker"
-	"github.com/Satyam709/integrated-test-system-oba/internal/time"
+	"github.com/Satyam709/integrated-test-system-oba/internal/timecontroller"
 )
 
 var (
@@ -54,7 +54,7 @@ func TestMain(m *testing.M) {
 	)
 
 	// set initial time
-	err = time.SetFakeTime(1746082800000) // 2025-05-1 00:00:00
+	err = timecontroller.SetFakeTime(1746082800000) // 2025-05-1 00:00:00
 	if err != nil {
 		log.Fatalf("Error setting initial fake time: %v", err)
 	}

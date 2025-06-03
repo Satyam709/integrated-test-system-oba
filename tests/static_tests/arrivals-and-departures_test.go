@@ -8,7 +8,7 @@ import (
 	"time"
 
 	onebusaway "github.com/OneBusAway/go-sdk"
-	timec "github.com/Satyam709/integrated-test-system-oba/internal/time"
+	"github.com/Satyam709/integrated-test-system-oba/internal/timecontroller"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -145,7 +145,7 @@ func addTestData() []ArrivalsAndDeparturesTest {
 		testCase1, testCase2, testCase3, testCase4,
 	}
 
-	// Sort test cases by currentTime to ensure consistent ordering 
+	// Sort test cases by currentTime to ensure consistent ordering
 	// fixes server frizziness(occurs if we go back in past)
 	sort.Slice(testCases, func(i, j int) bool {
 		return testCases[i].currentTime < testCases[j].currentTime
@@ -168,7 +168,7 @@ func TestArrivalsAndDepartures(t *testing.T) {
 func validate(test ArrivalsAndDeparturesTest, t *testing.T) {
 
 	// set the time
-	err := timec.SetFakeTime(test.currentTime)
+	err := timecontroller.SetFakeTime(test.currentTime)
 	assert.NoError(t, err, "Error setting fake time for arrivals and departures test: %s", test.testTitle)
 
 	context, cancel := context.WithTimeout(t.Context(), 30*time.Second)
